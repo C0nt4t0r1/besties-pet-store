@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Fonte global ── */
+* {
+  font-family: 'Montserrat', sans-serif !important;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* ── Animações de produto ── */
+.product-card {
+  transition: box-shadow 0.25s, transform 0.25s;
+}
+.product-card:hover {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.14) !important;
+  transform: translateY(-3px);
+}
+
+/* ── Animações de categoria ── */
+.cat-card .cat-emoji {
+  transition: transform 0.3s ease;
+  display: inline-block;
+}
+.cat-card:hover .cat-emoji {
+  transform: scale(1.18);
+}
+
+/* ── Grid responsivo de produtos ── */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+@media (max-width: 1024px) {
+  .products-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+}
+@media (max-width: 768px) {
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+@media (max-width: 480px) {
+  .products-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ── Scrollbar customizada ── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #FF5A36;
+  border-radius: 4px;
+}
