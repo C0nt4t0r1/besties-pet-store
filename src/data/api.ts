@@ -1,8 +1,8 @@
 import { CartItem, OrderResult, PRODUCTS_DB, Product } from "./constants";
 
 // Em desenvolvimento: usa proxy do Vite (/api → localhost:3001)
-// Em produção: usa a URL completa do backend no Render
-const BASE = import.meta.env.VITE_API_URL ?? "";
+// Em produção: usa a URL completa do backend no Render (VITE_API_URL)
+const BASE: string = import.meta.env.VITE_API_URL ?? "";
 
 export async function fetchProducts({
   search = "",
