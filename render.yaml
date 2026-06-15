@@ -1,0 +1,21 @@
+# render.yaml
+# Coloque este arquivo na raiz do repositório.
+# O Render detecta automaticamente e configura o serviço.
+
+services:
+  - type: web
+    name: besties-backend
+    runtime: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3001
+      - key: DATABASE_URL
+        sync: false        # você preenche manualmente no painel do Render
+      - key: JWT_SECRET
+        sync: false        # você preenche manualmente no painel do Render
+    autoDeploy: true       # faz redeploy automático a cada git push

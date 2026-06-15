@@ -1,7 +1,9 @@
 import { CartItem, OrderResult, PRODUCTS_DB, Product } from "./constants";
 
-// ── fetchProducts ───────────────────────────────────────────────────────────
-// Tenta buscar do backend Express; cai no mock se estiver offline.
+// Em desenvolvimento: usa proxy do Vite (/api → localhost:3001)
+// Em produção: usa a URL completa do backend no Render
+const BASE = import.meta.env.VITE_API_URL ?? "";
+
 export async function fetchProducts({
   search = "",
   category = "all",
@@ -11,12 +13,10 @@ export async function fetchProducts({
 } = {}): Promise<Product[]> {
   try {
     const params = new URLSearchParams({ search, category });
-    const res = await fetch(`/api/products?${params}`);
+    const res = await fetch(`${BASE}/api/products?${params}`);
     if (!res.ok) throw new Error("API offline");
-    const data: Product[] = await res.json();
-    return data;
+    return await res.json();
   } catch {
-    // Fallback: filtra o mock local
     await new Promise((r) => setTimeout(r, 300));
     return PRODUCTS_DB.filter((p) => {
       const okSearch = p.title.toLowerCase().includes(search.toLowerCase());
@@ -26,8 +26,6 @@ export async function fetchProducts({
   }
 }
 
-// ── checkout ────────────────────────────────────────────────────────────────
-// Envia pedido para o backend; gera ID local se estiver offline.
 export async function checkout(
   items: CartItem[],
   customerName = "Cliente",
@@ -37,7 +35,7 @@ export async function checkout(
   const total = items.reduce((s, i) => s + i.price * i.qty, 0);
 
   try {
-    const res = await fetch("/api/orders", {
+    const res = await fetch(`${BASE}/api/orders`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -57,7 +55,6 @@ export async function checkout(
     const data = await res.json();
     return { success: res.ok, orderId: data.order_ref || orderRef };
   } catch {
-    // Fallback: simula sucesso
     await new Promise((r) => setTimeout(r, 900));
     return { success: true, orderId: orderRef };
   }

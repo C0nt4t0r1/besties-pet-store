@@ -6,11 +6,16 @@ export default defineConfig({
   server: {
     port: 5173,
     proxy: {
-      // Redireciona /api/* → backend Express em localhost:3001
+      // Em desenvolvimento: redireciona /api/* para o backend local
       '/api': {
         target: 'http://localhost:3001',
         changeOrigin: true,
       },
     },
+  },
+  // Em produção (Vercel), VITE_API_URL aponta para o backend no Render
+  // Ex: https://besties-backend.onrender.com
+  define: {
+    __API_URL__: JSON.stringify(process.env.VITE_API_URL || ''),
   },
 })
